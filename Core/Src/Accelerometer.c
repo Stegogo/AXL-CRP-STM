@@ -106,7 +106,7 @@ void StartReadAccel (void const * argument)
 			packet[7] = (uint8_t)(ADXL_out[2] >> 0x08);
         	packet[8] = (uint8_t)(packet[2] ^ packet[3] ^ packet[4] ^ packet[5] ^ packet[6] ^ packet[7]);
         	HAL_UART_Transmit(&huart1, (uint8_t *)packet, sizeof(packet), 10);
-        	//HAL_UART_Transmit(&huart1, (uint8_t *)"OK", 3, 10);
+        	//HAL_UART_Transmit(&huart1, (uint8_t *)"OK\n", 3, 10);
         }
 }
 
