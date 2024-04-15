@@ -1771,9 +1771,9 @@ void StartReadAccel (void const * argument)
  800107a:	4b5d      	ldr	r3, [pc, #372]	; (80011f0 <StartReadAccel+0x198>)
  800107c:	220c      	movs	r2, #12
  800107e:	70da      	strb	r2, [r3, #3]
-    ADXL_InitStruct.Range        = RANGE_16G;
+    ADXL_InitStruct.Range        = RANGE_8G;
  8001080:	4b5b      	ldr	r3, [pc, #364]	; (80011f0 <StartReadAccel+0x198>)
- 8001082:	2203      	movs	r2, #3
+ 8001082:	2202      	movs	r2, #2
  8001084:	711a      	strb	r2, [r3, #4]
     ADXL_InitStruct.Resolution   = RESOLUTION_FULL;
  8001086:	4b5a      	ldr	r3, [pc, #360]	; (80011f0 <StartReadAccel+0x198>)

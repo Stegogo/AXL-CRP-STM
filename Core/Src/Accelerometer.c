@@ -58,7 +58,7 @@ void StartReadAccel (void const * argument)
 	ADXL_InitStruct.IntMode      = INT_ACTIVEHIGH;
 	ADXL_InitStruct.LPMode       = LPMODE_NORMAL;
 	ADXL_InitStruct.Rate         = BWRATE_400;
-    ADXL_InitStruct.Range        = RANGE_16G;
+    ADXL_InitStruct.Range        = RANGE_8G;
     ADXL_InitStruct.Resolution   = RESOLUTION_FULL;
     ADXL_InitStruct.Justify      = JUSTIFY_SIGNED; 
     ADXL_InitStruct.AutoSleep    = AUTOSLEEPOFF;
