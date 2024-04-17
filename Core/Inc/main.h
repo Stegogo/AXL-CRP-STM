@@ -74,14 +74,6 @@ void TaskSwitchedOut(uint32_t tag);
 #define ADXL_INT2_Pin GPIO_PIN_1
 #define ADXL_INT2_GPIO_Port GPIOB
 #define ADXL_INT2_EXTI_IRQn EXTI1_IRQn
-#define SD_SPI2_SCK_Pin GPIO_PIN_13
-#define SD_SPI2_SCK_GPIO_Port GPIOB
-#define SD_SPI2_MISO_Pin GPIO_PIN_14
-#define SD_SPI2_MISO_GPIO_Port GPIOB
-#define SD_SPI2_MOSI_Pin GPIO_PIN_15
-#define SD_SPI2_MOSI_GPIO_Port GPIOB
-#define SD_SPI2_CS_Pin GPIO_PIN_8
-#define SD_SPI2_CS_GPIO_Port GPIOA
 #define DEBUG_TAG1_Pin GPIO_PIN_5
 #define DEBUG_TAG1_GPIO_Port GPIOB
 #define DEBUG_TAG2_Pin GPIO_PIN_6

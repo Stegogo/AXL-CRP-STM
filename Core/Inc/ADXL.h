@@ -54,21 +54,21 @@ extern SPI_HandleTypeDef SPIhandler;
 // Registers' Address 
 #define DEVID 					0x0
 #define BW_RATE					0x2C 
-#define DATA_FORMAT 		        	0x31
+#define DATA_FORMAT 		    0x31
 #define FIFO_CTL 				0x38
 #define DATA0					0x32
 #define POWER_CTL 				0x2D
 #define THRESH_TAP				0x1D
-#define DUR					0x21
+#define DUR						0x21
 #define TAP_AXES				0x2A
 #define INT_ENABLE				0x2E
 #define INT_MAP					0x2F
 #define LATENT					0x22
 #define WINDOW					0x23
 #define THRESH_ACT				0x24
-#define THRESH_INACT			        0x25
+#define THRESH_INACT			0x25
 #define TIME_INAT				0x26
-#define ACT_INACT_CTL			        0x27
+#define ACT_INACT_CTL			0x27
 #define THRESH_FF 				0x28
 #define TIME_FF					0x29
 #define OFFX					0x1E
@@ -167,6 +167,17 @@ typedef enum
     INT2=1
 } ADXL_IntOutput;
 
+typedef enum
+{
+	D0,
+	D1,
+	D2,
+	D3,
+	D4,
+	D5,
+	D6,
+	D7
+} AdxlBitNum;
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* STRUCTURES                                                               */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -209,6 +220,7 @@ extern void       ADXL_disableActivity  (void);
 extern void       ADXL_enableFreeFall   (ADXL_IntOutput out, uint8_t Threshold, uint8_t Time);
 extern void       ADXL_disableFreeFall  (void);
 extern bool       ADXL_IntProto         (ADXL_InitTypeDef * adxl);
+extern uint8_t	  ADXL_getIntSource		(void);
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* GLOBAL VARIABLES                                                         */

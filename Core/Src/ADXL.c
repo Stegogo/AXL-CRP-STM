@@ -490,6 +490,16 @@ bool ADXL_IntProto(ADXL_InitTypeDef * adxl)
     else                               return true;
 }
 
+/** Get interrupt source
+* @brief Get INT_SOURCE register value to determine the cause of current interrupt
+*/
+uint8_t ADXL_getIntSource(void)
+{
+	uint8_t reg = 0;
+	readRegister(INT_SOURCE, &reg, 1);
+	return reg;
+}
+
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* STATIC MEMBERS                                                                */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
