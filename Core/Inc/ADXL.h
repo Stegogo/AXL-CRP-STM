@@ -129,6 +129,15 @@ extern SPI_HandleTypeDef SPIhandler;
 #define INT_OVERRUN      (uint8_t)(1<<0)
 
 
+#define ADXL345_DATA_READY				0x07
+#define ADXL345_SINGLE_TAP				0x06
+#define ADXL345_DOUBLE_TAP				0x05
+#define ADXL345_ACTIVITY				0x04
+#define ADXL345_INACTIVITY				0x03
+#define ADXL345_FREE_FALL				0x02
+#define ADXL345_WATERMARK				0x01
+#define ADXL345_OVERRUNY				0x00
+
 // ADXL_getAccel function definitions 
 #define OUTPUT_FLOAT  0
 #define OUTPUT_SIGNED 1
@@ -221,6 +230,7 @@ extern void       ADXL_enableFreeFall   (ADXL_IntOutput out, uint8_t Threshold, 
 extern void       ADXL_disableFreeFall  (void);
 extern bool       ADXL_IntProto         (ADXL_InitTypeDef * adxl);
 extern uint8_t	  ADXL_getIntSource		(void);
+extern bool 	  ADXL_triggered(uint8_t interrupts, int mask);
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* GLOBAL VARIABLES                                                         */

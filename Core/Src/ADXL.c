@@ -374,7 +374,8 @@ void ADXL_enableDoubleTap(ADXL_IntOutput out, uint8_t axes, uint8_t Duration, ui
 
     // Settings Int output
     readRegister(INT_MAP,&reg,1);
-    if (out == INT1) reg &= ~(1<<5); else reg |= (1<<5);
+    //if (out == INT1) reg &= ~(1<<5); else reg |= (1<<5);
+    reg |= (1<<5);
     writeRegister(INT_MAP,reg);
 
     // Enabling the TAP interrupt
@@ -500,6 +501,12 @@ uint8_t ADXL_getIntSource(void)
 	return reg;
 }
 
+// Check if Action was Triggered in Interrupts
+// Example triggered(interrupts, ADXL345_SINGLE_TAP);
+bool ADXL_triggered(uint8_t interrupts, int mask)
+{
+	return ((interrupts >> mask) & 1);
+}
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* STATIC MEMBERS                                                                */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/

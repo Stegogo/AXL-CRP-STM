@@ -13,9 +13,12 @@
 /* DEFINES                                                                  */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
       
-#define ACCEL_THRESHOLD_DEFAULT     19  // g
-#define ARRAY_LEN                   50
-#define NUM_OF_POINTS_DEFAULT       16  // 10:  6.25 ms, 16: 10ms
+#define TAP_DURATION	40
+#define TAP_THRESHOLD	20
+#define TAP_LATENT		80
+#define TAP_WINDOW		200
+
+#define WINDOW_ARR_LEN 	10
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* ENUMS                                                                    */
@@ -42,9 +45,9 @@ extern UART_HandleTypeDef huart1;
 
 //static uint16_t	accelThreshold       	= ACCEL_THRESHOLD_DEFAULT * ACCEL_THRESHOLD_DEFAULT * NUM_OF_POINTS_DEFAULT;
 //static uint16_t	accelNumOfPoints     	= NUM_OF_POINTS_DEFAULT;
-//static float	accelArray[ARRAY_LEN]  	= {0};
+static float	accelArray[ARRAY_LEN]  	= {0};
 //static uint16_t accelArrayPointer		= 0;
-uint8_t double_tap_count = 0;
+uint16_t double_tap_count = 0;
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* INTERFACE                                                                */
@@ -74,11 +77,9 @@ void StartReadAccel (void const * argument)
             if (status == ADXL_OK)
             {
 
-
+            	ADXL_Measure(ON);
                 ADXL_IntProto(&ADXL_InitStruct);
-                // ADXL_IntOutput out, uint8_t axes, uint8_t Duration, uint8_t Threshold, uint8_t Latent, uint8_t Window
-				ADXL_enableDoubleTap(INT1, (uint8_t)((1 << D0)), 40, 20, 80, 200);
-				ADXL_Measure(ON);
+				ADXL_enableDoubleTap(INT1, (uint8_t)((1 << D0)), TAP_DURATION, TAP_THRESHOLD, TAP_LATENT, TAP_WINDOW);
                 ADXL_getAccel(ADXL_acc, OUTPUT_FLOAT);
 
                 break;
@@ -104,7 +105,7 @@ void StartReadAccel (void const * argument)
 			packet[5] = (uint8_t)(ADXL_out[1] >> 0x08);
 			packet[6] = (uint8_t)(ADXL_out[2] & 0xFF);
 			packet[7] = (uint8_t)(ADXL_out[2] >> 0x08);
-        	packet[8] = (uint8_t)double_tap_count;
+        	packet[8] = (uint8_t)(packet[2] ^ packet[3] ^ packet[4] ^ packet[5] ^ packet[6] ^ packet[7]);
         	HAL_UART_Transmit(&huart1, (uint8_t *)packet, sizeof(packet), 10);
         }
 }
@@ -113,14 +114,13 @@ void StartReadAccel (void const * argument)
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if (ADXL_IntProto(&ADXL_InitStruct) == true) {
-		if (ADXL_getIntSource() & (INT_DOUBLE_TAP)) {	// Double tap interrupt
-			double_tap_count++;
-		}
-		if (ADXL_getIntSource() & (INT_DATA_READY)) {	// Data ready interrupt
+		if (GPIO_Pin == 1) {	// Data ready interrupt
 			ADXL_getAccel(ADXL_acc, OUTPUT_FLOAT);
 			osSemaphoreRelease(AccelDataReadyHandle);
 		}
-
+		if (GPIO_Pin == 2) {	// Double tap interrupt
+			double_tap_count++;
+		}
     }
 }
 

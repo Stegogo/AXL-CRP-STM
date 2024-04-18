@@ -1,2 +1,2 @@
 ../Core/Src/Accelerometer.c:54:6:StartReadAccel	48	static
-../Core/Src/Accelerometer.c:113:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/Accelerometer.c:114:6:HAL_GPIO_EXTI_Callback	16	static
