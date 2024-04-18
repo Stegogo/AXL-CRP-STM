@@ -14,7 +14,7 @@
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
       
 #define TAP_DURATION	40
-#define TAP_THRESHOLD	20
+#define TAP_THRESHOLD	40
 #define TAP_LATENT		80
 #define TAP_WINDOW		200
 
@@ -45,7 +45,7 @@ extern UART_HandleTypeDef huart1;
 
 //static uint16_t	accelThreshold       	= ACCEL_THRESHOLD_DEFAULT * ACCEL_THRESHOLD_DEFAULT * NUM_OF_POINTS_DEFAULT;
 //static uint16_t	accelNumOfPoints     	= NUM_OF_POINTS_DEFAULT;
-static float	accelArray[ARRAY_LEN]  	= {0};
+//static float	accelArray[ARRAY_LEN]  	= {0};
 //static uint16_t accelArrayPointer		= 0;
 uint16_t double_tap_count = 0;
 
