@@ -49,6 +49,7 @@
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId ReadAccelHandle;
+osThreadId CheckTapsHandle;
 osSemaphoreId AccelDataReadyHandle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,6 +59,7 @@ osSemaphoreId AccelDataReadyHandle;
 
 void StartDefaultTask(void const * argument);
 extern void StartReadAccel(void const * argument);
+extern void StartCheckTaps(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -134,6 +136,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of ReadAccel */
   osThreadDef(ReadAccel, StartReadAccel, osPriorityNormal, 0, 128);
   ReadAccelHandle = osThreadCreate(osThread(ReadAccel), NULL);
+
+  /* definition and creation of CheckTaps */
+  osThreadDef(CheckTaps, StartCheckTaps, osPriorityNormal, 0, 128);
+  CheckTapsHandle = osThreadCreate(osThread(CheckTaps), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

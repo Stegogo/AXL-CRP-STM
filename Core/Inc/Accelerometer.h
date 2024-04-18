@@ -26,8 +26,9 @@
 /* FUNCTION PROTOTYPES                                                      */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
-extern void StartReadAccel           (void const * argument);
-extern void HAL_GPIO_EXTI_Callback       (uint16_t GPIO_Pin);
+extern void StartReadAccel           	(void const * argument);
+extern void StartCheckTaps				(void const * argument);
+extern void HAL_GPIO_EXTI_Callback		(uint16_t GPIO_Pin);
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* GLOBAL VARIABLES                                                         */

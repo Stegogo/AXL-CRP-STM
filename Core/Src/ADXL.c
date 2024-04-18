@@ -458,7 +458,8 @@ void ADXL_enableFreeFall(ADXL_IntOutput out, uint8_t Threshold, uint8_t Time)
     writeRegister(THRESH_FF,Threshold);
     // Settings Int output
     readRegister(INT_MAP,&reg,1);
-    if (out == INT1) reg &= ~(1<<2); else reg |= (1<<2);
+    //if (out == INT1) reg &= ~(1<<2); else reg |= (1<<2);
+    reg |= (1<<2);
     writeRegister(INT_MAP,reg);
 
     readRegister(INT_ENABLE,&reg,1);

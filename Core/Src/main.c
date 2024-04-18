@@ -165,6 +165,9 @@ void TaskSwitchedIn(uint32_t tag)
 	case 2:
 		DEBUG_TAG2_GPIO_Port->BSRR = DEBUG_TAG2_Pin;
 		break;
+	case 3:
+		DEBUG_TAG3_GPIO_Port->BSRR = DEBUG_TAG3_Pin;
+		break;
 	}
 }
 
@@ -178,6 +181,9 @@ void TaskSwitchedOut(uint32_t tag)
 		break;
 	case 2:
 		DEBUG_TAG2_GPIO_Port->BSRR = (uint32_t)DEBUG_TAG2_Pin << 16U;
+		break;
+	case 3:
+		DEBUG_TAG3_GPIO_Port->BSRR = (uint32_t)DEBUG_TAG3_Pin << 16U;
 		break;
 	}
 }
