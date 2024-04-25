@@ -19,7 +19,7 @@
 #define TAP_WINDOW		200
 
 #define ACCEL_THRESHOLD			2  // m/s/s
-#define ACCEL_ARRAY_LEN 		1000	// 100HZ freq rate is 1000 samples per second
+#define ACCEL_ARRAY_LEN 		100	// 100HZ freq rate is 1000 samples per second
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* ENUMS                                                                    */

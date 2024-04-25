@@ -21,31 +21,31 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   8 .data         00000064  20000000  08006e94  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00002264  20000064  08006ef8  00020064  2**2
+  9 .bss          00001454  20000064  08006ef8  00020064  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  200022c8  08006ef8  000222c8  2**0
+ 10 ._user_heap_stack 00000600  200014b8  08006ef8  000214b8  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00020064  2**0
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  0002008d  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00016f54  00000000  00000000  000200d0  2**0
+ 13 .debug_info   00016f53  00000000  00000000  000200d0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00003c0f  00000000  00000000  00037024  2**0
+ 14 .debug_abbrev 00003c06  00000000  00000000  00037023  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 000014d0  00000000  00000000  0003ac38  2**3
+ 15 .debug_aranges 000014d0  00000000  00000000  0003ac30  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 00001017  00000000  00000000  0003c108  2**0
+ 16 .debug_rnglists 00001017  00000000  00000000  0003c100  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  0001b3a0  00000000  00000000  0003d11f  2**0
+ 17 .debug_macro  0001b3a0  00000000  00000000  0003d117  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   000187b8  00000000  00000000  000584bf  2**0
+ 18 .debug_line   000187b8  00000000  00000000  000584b7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000956c3  00000000  00000000  00070c77  2**0
+ 19 .debug_str    000956c2  00000000  00000000  00070c6f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00005abc  00000000  00000000  0010633c  2**2
+ 20 .debug_frame  00005abc  00000000  00000000  00106334  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000005f  00000000  00000000  0010bdf8  2**0
+ 21 .debug_line_str 0000005f  00000000  00000000  0010bdf0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1818,7 +1818,7 @@ static void writeRegister(uint8_t address,uint8_t value)
  80011c0:	46bd      	mov	sp, r7
  80011c2:	bd80      	pop	{r7, pc}
  80011c4:	40010800 	.word	0x40010800
- 80011c8:	20001308 	.word	0x20001308
+ 80011c8:	200004f8 	.word	0x200004f8
 
 080011cc <readRegister>:
 * @address: 8-bit address of register
@@ -1895,7 +1895,7 @@ static void readRegister(uint8_t address,uint8_t * value, uint8_t num)
  8001240:	bd80      	pop	{r7, pc}
  8001242:	bf00      	nop
  8001244:	40010800 	.word	0x40010800
- 8001248:	20001308 	.word	0x20001308
+ 8001248:	200004f8 	.word	0x200004f8
 
 0800124c <adxlBW>:
             10 		|  	100
@@ -2280,7 +2280,7 @@ void StartReadAccel (void const * argument)
  80014b2:	2200      	movs	r2, #0
  80014b4:	601a      	str	r2, [r3, #0]
         		memset ((uint8_t *)accelArray, 0, ACCEL_ARRAY_LEN * sizeof (float));
- 80014b6:	f44f 627a 	mov.w	r2, #4000	; 0xfa0
+ 80014b6:	f44f 72c8 	mov.w	r2, #400	; 0x190
  80014ba:	2100      	movs	r1, #0
  80014bc:	484c      	ldr	r0, [pc, #304]	; (80015f0 <StartReadAccel+0x2b8>)
  80014be:	f005 fbad 	bl	8006c1c <memset>
@@ -2422,14 +2422,14 @@ void StartReadAccel (void const * argument)
  80015d4:	40c38800 	.word	0x40c38800
  80015d8:	20000080 	.word	0x20000080
  80015dc:	2000008c 	.word	0x2000008c
- 80015e0:	20001060 	.word	0x20001060
+ 80015e0:	20000250 	.word	0x20000250
  80015e4:	20000098 	.word	0x20000098
  80015e8:	200000a8 	.word	0x200000a8
- 80015ec:	20001054 	.word	0x20001054
+ 80015ec:	20000244 	.word	0x20000244
  80015f0:	200000b4 	.word	0x200000b4
  80015f4:	20000000 	.word	0x20000000
  80015f8:	200000ac 	.word	0x200000ac
- 80015fc:	200013f0 	.word	0x200013f0
+ 80015fc:	200005e0 	.word	0x200005e0
 
 08001600 <HAL_GPIO_EXTI_Callback>:
         }
@@ -2484,8 +2484,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  8001646:	bd80      	pop	{r7, pc}
  8001648:	20000080 	.word	0x20000080
  800164c:	2000008c 	.word	0x2000008c
- 8001650:	20001060 	.word	0x20001060
- 8001654:	20001056 	.word	0x20001056
+ 8001650:	20000250 	.word	0x20000250
+ 8001654:	20000246 	.word	0x20000246
 
 08001658 <calcDisplacement>:
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -2640,8 +2640,8 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
  800175e:	46bd      	mov	sp, r7
  8001760:	bc80      	pop	{r7}
  8001762:	4770      	bx	lr
- 8001764:	20001064 	.word	0x20001064
- 8001768:	20001108 	.word	0x20001108
+ 8001764:	20000254 	.word	0x20000254
+ 8001768:	200002f8 	.word	0x200002f8
 
 0800176c <MX_FREERTOS_Init>:
 /**
@@ -2720,11 +2720,11 @@ void MX_FREERTOS_Init(void) {
  80017d6:	3740      	adds	r7, #64	; 0x40
  80017d8:	46bd      	mov	sp, r7
  80017da:	bdb0      	pop	{r4, r5, r7, pc}
- 80017dc:	20001060 	.word	0x20001060
+ 80017dc:	20000250 	.word	0x20000250
  80017e0:	08006e14 	.word	0x08006e14
- 80017e4:	20001058 	.word	0x20001058
+ 80017e4:	20000248 	.word	0x20000248
  80017e8:	08006e3c 	.word	0x08006e3c
- 80017ec:	2000105c 	.word	0x2000105c
+ 80017ec:	2000024c 	.word	0x2000024c
 
 080017f0 <StartDefaultTask>:
   * @param  argument: Not used
@@ -3017,7 +3017,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
  800199a:	e7fe      	b.n	800199a <main+0x2a>
- 800199c:	200013a8 	.word	0x200013a8
+ 800199c:	20000598 	.word	0x20000598
 
 080019a0 <SystemClock_Config>:
 /**
@@ -3065,8 +3065,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
  80019d8:	f44f 3380 	mov.w	r3, #65536	; 0x10000
  80019dc:	63bb      	str	r3, [r7, #56]	; 0x38
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL4;
- 80019de:	f44f 2300 	mov.w	r3, #524288	; 0x80000
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+ 80019de:	f44f 13e0 	mov.w	r3, #1835008	; 0x1c0000
  80019e2:	63fb      	str	r3, [r7, #60]	; 0x3c
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
  80019e4:	f107 0318 	add.w	r3, r7, #24
@@ -3099,9 +3099,9 @@ void SystemClock_Config(void)
  8001a0a:	2300      	movs	r3, #0
  8001a0c:	617b      	str	r3, [r7, #20]
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
  8001a0e:	1d3b      	adds	r3, r7, #4
- 8001a10:	2101      	movs	r1, #1
+ 8001a10:	2102      	movs	r1, #2
  8001a12:	4618      	mov	r0, r3
  8001a14:	f001 f840 	bl	8002a98 <HAL_RCC_ClockConfig>
  8001a18:	4603      	mov	r3, r0
@@ -3329,9 +3329,9 @@ void MX_SPI1_Init(void)
  8001b12:	4b0e      	ldr	r3, [pc, #56]	; (8001b4c <MX_SPI1_Init+0x64>)
  8001b14:	f44f 7200 	mov.w	r2, #512	; 0x200
  8001b18:	619a      	str	r2, [r3, #24]
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
  8001b1a:	4b0c      	ldr	r3, [pc, #48]	; (8001b4c <MX_SPI1_Init+0x64>)
- 8001b1c:	2210      	movs	r2, #16
+ 8001b1c:	2218      	movs	r2, #24
  8001b1e:	61da      	str	r2, [r3, #28]
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
  8001b20:	4b0a      	ldr	r3, [pc, #40]	; (8001b4c <MX_SPI1_Init+0x64>)
@@ -3366,7 +3366,7 @@ void MX_SPI1_Init(void)
 }
  8001b48:	bf00      	nop
  8001b4a:	bd80      	pop	{r7, pc}
- 8001b4c:	20001308 	.word	0x20001308
+ 8001b4c:	200004f8 	.word	0x200004f8
  8001b50:	40013000 	.word	0x40013000
 
 08001b54 <HAL_SPI_MspInit>:
@@ -3692,7 +3692,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8001d26:	bd80      	pop	{r7, pc}
  8001d28:	40021000 	.word	0x40021000
  8001d2c:	431bde83 	.word	0x431bde83
- 8001d30:	20001360 	.word	0x20001360
+ 8001d30:	20000550 	.word	0x20000550
  8001d34:	40012c00 	.word	0x40012c00
  8001d38:	20000008 	.word	0x20000008
 
@@ -3859,7 +3859,7 @@ void TIM1_UP_IRQHandler(void)
  8001d8e:	bf00      	nop
  8001d90:	bd80      	pop	{r7, pc}
  8001d92:	bf00      	nop
- 8001d94:	20001360 	.word	0x20001360
+ 8001d94:	20000550 	.word	0x20000550
 
 08001d98 <TIM2_IRQHandler>:
 
@@ -3883,7 +3883,7 @@ void TIM2_IRQHandler(void)
  8001da2:	bf00      	nop
  8001da4:	bd80      	pop	{r7, pc}
  8001da6:	bf00      	nop
- 8001da8:	200013a8 	.word	0x200013a8
+ 8001da8:	20000598 	.word	0x20000598
 
 08001dac <SystemInit>:
   * @note   This function should be used only after reset.
@@ -4013,7 +4013,7 @@ void MX_TIM2_Init(void)
  8001e4a:	46bd      	mov	sp, r7
  8001e4c:	bd80      	pop	{r7, pc}
  8001e4e:	bf00      	nop
- 8001e50:	200013a8 	.word	0x200013a8
+ 8001e50:	20000598 	.word	0x20000598
 
 08001e54 <HAL_TIM_Base_MspInit>:
 
@@ -4131,7 +4131,7 @@ void MX_USART1_UART_Init(void)
  8001ee2:	bf00      	nop
  8001ee4:	bd80      	pop	{r7, pc}
  8001ee6:	bf00      	nop
- 8001ee8:	200013f0 	.word	0x200013f0
+ 8001ee8:	200005e0 	.word	0x200005e0
  8001eec:	40013800 	.word	0x40013800
 
 08001ef0 <HAL_UART_MspInit>:
@@ -4315,7 +4315,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  8001fc8:	20000064 	.word	0x20000064
   ldr r4, =_ebss
- 8001fcc:	200022c8 	.word	0x200022c8
+ 8001fcc:	200014b8 	.word	0x200014b8
 
 08001fd0 <ADC1_2_IRQHandler>:
  * @retval : None
@@ -4397,7 +4397,7 @@ __weak void HAL_IncTick(void)
  8002018:	bc80      	pop	{r7}
  800201a:	4770      	bx	lr
  800201c:	2000000c 	.word	0x2000000c
- 8002020:	20001438 	.word	0x20001438
+ 8002020:	20000628 	.word	0x20000628
 
 08002024 <HAL_GetTick>:
   * @note  This function is declared as __weak to be overwritten in case of other
@@ -4416,7 +4416,7 @@ __weak uint32_t HAL_GetTick(void)
  800202e:	46bd      	mov	sp, r7
  8002030:	bc80      	pop	{r7}
  8002032:	4770      	bx	lr
- 8002034:	20001438 	.word	0x20001438
+ 8002034:	20000628 	.word	0x20000628
 
 08002038 <__NVIC_SetPriorityGrouping>:
            In case of a conflict between priority grouping and available
@@ -14480,9 +14480,9 @@ BaseType_t xReturn;
  8005606:	46bd      	mov	sp, r7
  8005608:	bd80      	pop	{r7, pc}
  800560a:	bf00      	nop
- 800560c:	20002188 	.word	0x20002188
- 8005610:	200021f0 	.word	0x200021f0
- 8005614:	20002258 	.word	0x20002258
+ 800560c:	20001378 	.word	0x20001378
+ 8005610:	200013e0 	.word	0x200013e0
+ 8005614:	20001448 	.word	0x20001448
 
 08005618 <prvAddNewTaskToReadyList>:
 /*-----------------------------------------------------------*/
@@ -14631,12 +14631,12 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
  80056ca:	3708      	adds	r7, #8
  80056cc:	46bd      	mov	sp, r7
  80056ce:	bd80      	pop	{r7, pc}
- 80056d0:	2000153c 	.word	0x2000153c
- 80056d4:	2000143c 	.word	0x2000143c
- 80056d8:	20001548 	.word	0x20001548
- 80056dc:	20001558 	.word	0x20001558
- 80056e0:	20001544 	.word	0x20001544
- 80056e4:	20001440 	.word	0x20001440
+ 80056d0:	2000072c 	.word	0x2000072c
+ 80056d4:	2000062c 	.word	0x2000062c
+ 80056d8:	20000738 	.word	0x20000738
+ 80056dc:	20000748 	.word	0x20000748
+ 80056e0:	20000734 	.word	0x20000734
+ 80056e4:	20000630 	.word	0x20000630
  80056e8:	e000ed04 	.word	0xe000ed04
 
 080056ec <vTaskDelay>:
@@ -14715,7 +14715,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
  8005746:	3710      	adds	r7, #16
  8005748:	46bd      	mov	sp, r7
  800574a:	bd80      	pop	{r7, pc}
- 800574c:	20001564 	.word	0x20001564
+ 800574c:	20000754 	.word	0x20000754
  8005750:	e000ed04 	.word	0xe000ed04
 
 08005754 <vTaskStartScheduler>:
@@ -14864,12 +14864,12 @@ BaseType_t xReturn;
  8005806:	bf00      	nop
  8005808:	08006e58 	.word	0x08006e58
  800580c:	08005e1d 	.word	0x08005e1d
- 8005810:	20001560 	.word	0x20001560
- 8005814:	2000143c 	.word	0x2000143c
+ 8005810:	20000750 	.word	0x20000750
+ 8005814:	2000062c 	.word	0x2000062c
  8005818:	20000060 	.word	0x20000060
- 800581c:	2000155c 	.word	0x2000155c
- 8005820:	20001548 	.word	0x20001548
- 8005824:	20001540 	.word	0x20001540
+ 800581c:	2000074c 	.word	0x2000074c
+ 8005820:	20000738 	.word	0x20000738
+ 8005824:	20000730 	.word	0x20000730
 
 08005828 <vTaskSuspendAll>:
 	vPortEndScheduler();
@@ -14896,7 +14896,7 @@ void vTaskSuspendAll( void )
  800583a:	bc80      	pop	{r7}
  800583c:	4770      	bx	lr
  800583e:	bf00      	nop
- 8005840:	20001564 	.word	0x20001564
+ 8005840:	20000754 	.word	0x20000754
 
 08005844 <xTaskResumeAll>:
 
@@ -15122,14 +15122,14 @@ BaseType_t xAlreadyYielded = pdFALSE;
  8005952:	3710      	adds	r7, #16
  8005954:	46bd      	mov	sp, r7
  8005956:	bd80      	pop	{r7, pc}
- 8005958:	20001564 	.word	0x20001564
- 800595c:	2000153c 	.word	0x2000153c
- 8005960:	200014fc 	.word	0x200014fc
- 8005964:	20001544 	.word	0x20001544
- 8005968:	20001440 	.word	0x20001440
- 800596c:	2000143c 	.word	0x2000143c
- 8005970:	20001550 	.word	0x20001550
- 8005974:	2000154c 	.word	0x2000154c
+ 8005958:	20000754 	.word	0x20000754
+ 800595c:	2000072c 	.word	0x2000072c
+ 8005960:	200006ec 	.word	0x200006ec
+ 8005964:	20000734 	.word	0x20000734
+ 8005968:	20000630 	.word	0x20000630
+ 800596c:	2000062c 	.word	0x2000062c
+ 8005970:	20000740 	.word	0x20000740
+ 8005974:	2000073c 	.word	0x2000073c
  8005978:	e000ed04 	.word	0xe000ed04
 
 0800597c <xTaskIncrementTick>:
@@ -15409,17 +15409,17 @@ BaseType_t xSwitchRequired = pdFALSE;
  8005ac6:	46bd      	mov	sp, r7
  8005ac8:	bd80      	pop	{r7, pc}
  8005aca:	bf00      	nop
- 8005acc:	20001564 	.word	0x20001564
- 8005ad0:	20001540 	.word	0x20001540
- 8005ad4:	200014f4 	.word	0x200014f4
- 8005ad8:	200014f8 	.word	0x200014f8
- 8005adc:	20001554 	.word	0x20001554
- 8005ae0:	2000155c 	.word	0x2000155c
- 8005ae4:	20001544 	.word	0x20001544
- 8005ae8:	20001440 	.word	0x20001440
- 8005aec:	2000143c 	.word	0x2000143c
- 8005af0:	2000154c 	.word	0x2000154c
- 8005af4:	20001550 	.word	0x20001550
+ 8005acc:	20000754 	.word	0x20000754
+ 8005ad0:	20000730 	.word	0x20000730
+ 8005ad4:	200006e4 	.word	0x200006e4
+ 8005ad8:	200006e8 	.word	0x200006e8
+ 8005adc:	20000744 	.word	0x20000744
+ 8005ae0:	2000074c 	.word	0x2000074c
+ 8005ae4:	20000734 	.word	0x20000734
+ 8005ae8:	20000630 	.word	0x20000630
+ 8005aec:	2000062c 	.word	0x2000062c
+ 8005af0:	2000073c 	.word	0x2000073c
+ 8005af4:	20000740 	.word	0x20000740
 
 08005af8 <vTaskSetApplicationTaskTag>:
 /*-----------------------------------------------------------*/
@@ -15471,7 +15471,7 @@ BaseType_t xSwitchRequired = pdFALSE;
  8005b26:	46bd      	mov	sp, r7
  8005b28:	bd80      	pop	{r7, pc}
  8005b2a:	bf00      	nop
- 8005b2c:	2000143c 	.word	0x2000143c
+ 8005b2c:	2000062c 	.word	0x2000062c
 
 08005b30 <vTaskSwitchContext>:
 
@@ -15589,11 +15589,11 @@ void vTaskSwitchContext( void )
  8005bea:	3718      	adds	r7, #24
  8005bec:	46bd      	mov	sp, r7
  8005bee:	bd80      	pop	{r7, pc}
- 8005bf0:	20001564 	.word	0x20001564
- 8005bf4:	20001550 	.word	0x20001550
- 8005bf8:	2000143c 	.word	0x2000143c
- 8005bfc:	20001544 	.word	0x20001544
- 8005c00:	20001440 	.word	0x20001440
+ 8005bf0:	20000754 	.word	0x20000754
+ 8005bf4:	20000740 	.word	0x20000740
+ 8005bf8:	2000062c 	.word	0x2000062c
+ 8005bfc:	20000734 	.word	0x20000734
+ 8005c00:	20000630 	.word	0x20000630
  8005c04:	20000060 	.word	0x20000060
 
 08005c08 <vTaskPlaceOnEventList>:
@@ -15641,7 +15641,7 @@ void vTaskPlaceOnEventList( List_t * const pxEventList, const TickType_t xTicksT
  8005c46:	3710      	adds	r7, #16
  8005c48:	46bd      	mov	sp, r7
  8005c4a:	bd80      	pop	{r7, pc}
- 8005c4c:	2000143c 	.word	0x2000143c
+ 8005c4c:	2000062c 	.word	0x2000062c
 
 08005c50 <xTaskRemoveFromEventList>:
 
@@ -15772,12 +15772,12 @@ BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList )
  8005cf6:	3718      	adds	r7, #24
  8005cf8:	46bd      	mov	sp, r7
  8005cfa:	bd80      	pop	{r7, pc}
- 8005cfc:	20001564 	.word	0x20001564
- 8005d00:	20001544 	.word	0x20001544
- 8005d04:	20001440 	.word	0x20001440
- 8005d08:	200014fc 	.word	0x200014fc
- 8005d0c:	2000143c 	.word	0x2000143c
- 8005d10:	20001550 	.word	0x20001550
+ 8005cfc:	20000754 	.word	0x20000754
+ 8005d00:	20000734 	.word	0x20000734
+ 8005d04:	20000630 	.word	0x20000630
+ 8005d08:	200006ec 	.word	0x200006ec
+ 8005d0c:	2000062c 	.word	0x2000062c
+ 8005d10:	20000740 	.word	0x20000740
 
 08005d14 <vTaskInternalSetTimeOutState>:
 	taskEXIT_CRITICAL();
@@ -15808,8 +15808,8 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut )
  8005d32:	bc80      	pop	{r7}
  8005d34:	4770      	bx	lr
  8005d36:	bf00      	nop
- 8005d38:	20001554 	.word	0x20001554
- 8005d3c:	20001540 	.word	0x20001540
+ 8005d38:	20000744 	.word	0x20000744
+ 8005d3c:	20000730 	.word	0x20000730
 
 08005d40 <xTaskCheckForTimeOut>:
 /*-----------------------------------------------------------*/
@@ -15952,8 +15952,8 @@ BaseType_t xReturn;
  8005df6:	3720      	adds	r7, #32
  8005df8:	46bd      	mov	sp, r7
  8005dfa:	bd80      	pop	{r7, pc}
- 8005dfc:	20001540 	.word	0x20001540
- 8005e00:	20001554 	.word	0x20001554
+ 8005dfc:	20000730 	.word	0x20000730
+ 8005e00:	20000744 	.word	0x20000744
 
 08005e04 <vTaskMissedYield>:
 /*-----------------------------------------------------------*/
@@ -15972,7 +15972,7 @@ void vTaskMissedYield( void )
  8005e12:	bc80      	pop	{r7}
  8005e14:	4770      	bx	lr
  8005e16:	bf00      	nop
- 8005e18:	20001550 	.word	0x20001550
+ 8005e18:	20000740 	.word	0x20000740
 
 08005e1c <prvIdleTask>:
  *
@@ -16019,7 +16019,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 		prvCheckTasksWaitingTermination();
  8005e44:	e7ee      	b.n	8005e24 <prvIdleTask+0x8>
  8005e46:	bf00      	nop
- 8005e48:	20001440 	.word	0x20001440
+ 8005e48:	20000630 	.word	0x20000630
  8005e4c:	e000ed04 	.word	0xe000ed04
 
 08005e50 <prvInitialiseTaskLists>:
@@ -16100,14 +16100,14 @@ UBaseType_t uxPriority;
  8005eaa:	46bd      	mov	sp, r7
  8005eac:	bd80      	pop	{r7, pc}
  8005eae:	bf00      	nop
- 8005eb0:	20001440 	.word	0x20001440
- 8005eb4:	200014cc 	.word	0x200014cc
- 8005eb8:	200014e0 	.word	0x200014e0
- 8005ebc:	200014fc 	.word	0x200014fc
- 8005ec0:	20001510 	.word	0x20001510
- 8005ec4:	20001528 	.word	0x20001528
- 8005ec8:	200014f4 	.word	0x200014f4
- 8005ecc:	200014f8 	.word	0x200014f8
+ 8005eb0:	20000630 	.word	0x20000630
+ 8005eb4:	200006bc 	.word	0x200006bc
+ 8005eb8:	200006d0 	.word	0x200006d0
+ 8005ebc:	200006ec 	.word	0x200006ec
+ 8005ec0:	20000700 	.word	0x20000700
+ 8005ec4:	20000718 	.word	0x20000718
+ 8005ec8:	200006e4 	.word	0x200006e4
+ 8005ecc:	200006e8 	.word	0x200006e8
 
 08005ed0 <prvCheckTasksWaitingTermination>:
 /*-----------------------------------------------------------*/
@@ -16172,9 +16172,9 @@ static void prvCheckTasksWaitingTermination( void )
  8005f1a:	46bd      	mov	sp, r7
  8005f1c:	bd80      	pop	{r7, pc}
  8005f1e:	bf00      	nop
- 8005f20:	20001510 	.word	0x20001510
- 8005f24:	2000153c 	.word	0x2000153c
- 8005f28:	20001524 	.word	0x20001524
+ 8005f20:	20000700 	.word	0x20000700
+ 8005f24:	2000072c 	.word	0x2000072c
+ 8005f28:	20000714 	.word	0x20000714
 
 08005f2c <prvDeleteTCB>:
 /*-----------------------------------------------------------*/
@@ -16311,8 +16311,8 @@ TCB_t *pxTCB;
  8005fce:	46bd      	mov	sp, r7
  8005fd0:	bc80      	pop	{r7}
  8005fd2:	4770      	bx	lr
- 8005fd4:	200014f4 	.word	0x200014f4
- 8005fd8:	2000155c 	.word	0x2000155c
+ 8005fd4:	200006e4 	.word	0x200006e4
+ 8005fd8:	2000074c 	.word	0x2000074c
 
 08005fdc <xTaskGetSchedulerState>:
 /*-----------------------------------------------------------*/
@@ -16367,8 +16367,8 @@ TCB_t *pxTCB;
  800600a:	bc80      	pop	{r7}
  800600c:	4770      	bx	lr
  800600e:	bf00      	nop
- 8006010:	20001548 	.word	0x20001548
- 8006014:	20001564 	.word	0x20001564
+ 8006010:	20000738 	.word	0x20000738
+ 8006014:	20000754 	.word	0x20000754
 
 08006018 <xTaskPriorityInherit>:
 /*-----------------------------------------------------------*/
@@ -16565,9 +16565,9 @@ TCB_t *pxTCB;
  8006112:	46bd      	mov	sp, r7
  8006114:	bd80      	pop	{r7, pc}
  8006116:	bf00      	nop
- 8006118:	2000143c 	.word	0x2000143c
- 800611c:	20001440 	.word	0x20001440
- 8006120:	20001544 	.word	0x20001544
+ 8006118:	2000062c 	.word	0x2000062c
+ 800611c:	20000630 	.word	0x20000630
+ 8006120:	20000734 	.word	0x20000734
 
 08006124 <xTaskPriorityDisinherit>:
 /*-----------------------------------------------------------*/
@@ -16748,9 +16748,9 @@ TCB_t *pxTCB;
  800621e:	46bd      	mov	sp, r7
  8006220:	bd80      	pop	{r7, pc}
  8006222:	bf00      	nop
- 8006224:	2000143c 	.word	0x2000143c
- 8006228:	20001440 	.word	0x20001440
- 800622c:	20001544 	.word	0x20001544
+ 8006224:	2000062c 	.word	0x2000062c
+ 8006228:	20000630 	.word	0x20000630
+ 800622c:	20000734 	.word	0x20000734
 
 08006230 <vTaskPriorityDisinheritAfterTimeout>:
 /*-----------------------------------------------------------*/
@@ -16975,9 +16975,9 @@ TCB_t *pxTCB;
  800635e:	46bd      	mov	sp, r7
  8006360:	bd80      	pop	{r7, pc}
  8006362:	bf00      	nop
- 8006364:	2000143c 	.word	0x2000143c
- 8006368:	20001440 	.word	0x20001440
- 800636c:	20001544 	.word	0x20001544
+ 8006364:	2000062c 	.word	0x2000062c
+ 8006368:	20000630 	.word	0x20000630
+ 800636c:	20000734 	.word	0x20000734
 
 08006370 <pvTaskIncrementMutexHeldCount>:
 /*-----------------------------------------------------------*/
@@ -17013,7 +17013,7 @@ TCB_t *pxTCB;
  800638e:	bc80      	pop	{r7}
  8006390:	4770      	bx	lr
  8006392:	bf00      	nop
- 8006394:	2000143c 	.word	0x2000143c
+ 8006394:	2000062c 	.word	0x2000062c
 
 08006398 <prvAddCurrentTaskToDelayedList>:
 #endif /* configUSE_TASK_NOTIFICATIONS */
@@ -17142,13 +17142,13 @@ const TickType_t xConstTickCount = xTickCount;
  8006442:	46bd      	mov	sp, r7
  8006444:	bd80      	pop	{r7, pc}
  8006446:	bf00      	nop
- 8006448:	20001540 	.word	0x20001540
- 800644c:	2000143c 	.word	0x2000143c
- 8006450:	20001544 	.word	0x20001544
- 8006454:	20001528 	.word	0x20001528
- 8006458:	200014f8 	.word	0x200014f8
- 800645c:	200014f4 	.word	0x200014f4
- 8006460:	2000155c 	.word	0x2000155c
+ 8006448:	20000730 	.word	0x20000730
+ 800644c:	2000062c 	.word	0x2000062c
+ 8006450:	20000734 	.word	0x20000734
+ 8006454:	20000718 	.word	0x20000718
+ 8006458:	200006e8 	.word	0x200006e8
+ 800645c:	200006e4 	.word	0x200006e4
+ 8006460:	2000074c 	.word	0x2000074c
 
 08006464 <pxPortInitialiseStack>:
 
@@ -17291,7 +17291,7 @@ void vPortSVCHandler( void )
  800653e:	4770      	bx	lr
 
 08006540 <pxCurrentTCBConst2>:
- 8006540:	2000143c 	.word	0x2000143c
+ 8006540:	2000062c 	.word	0x2000062c
 					"	bx r14							\n"
 					"									\n"
 					"	.align 4						\n"
@@ -17520,8 +17520,8 @@ BaseType_t xPortStartScheduler( void )
  8006654:	46bd      	mov	sp, r7
  8006656:	bd80      	pop	{r7, pc}
  8006658:	e000e400 	.word	0xe000e400
- 800665c:	20001568 	.word	0x20001568
- 8006660:	2000156c 	.word	0x2000156c
+ 800665c:	20000758 	.word	0x20000758
+ 8006660:	2000075c 	.word	0x2000075c
  8006664:	e000ed20 	.word	0xe000ed20
  8006668:	20000010 	.word	0x20000010
 
@@ -17667,7 +17667,7 @@ void xPortPendSVHandler( void )
  800675e:	4770      	bx	lr
 
 08006760 <pxCurrentTCBConst>:
- 8006760:	2000143c 	.word	0x2000143c
+ 8006760:	2000062c 	.word	0x2000062c
 	"										\n"
 	"	.align 4							\n"
 	"pxCurrentTCBConst: .word pxCurrentTCB	\n"
@@ -17855,9 +17855,9 @@ __attribute__(( weak )) void vPortSetupTimerInterrupt( void )
  8006858:	bc80      	pop	{r7}
  800685a:	4770      	bx	lr
  800685c:	e000e3f0 	.word	0xe000e3f0
- 8006860:	20001568 	.word	0x20001568
+ 8006860:	20000758 	.word	0x20000758
  8006864:	e000ed0c 	.word	0xe000ed0c
- 8006868:	2000156c 	.word	0x2000156c
+ 8006868:	2000075c 	.word	0x2000075c
 
 0800686c <pvPortMalloc>:
 static size_t xBlockAllocatedBit = 0;
@@ -18145,11 +18145,11 @@ void *pvReturn = NULL;
  80069da:	3728      	adds	r7, #40	; 0x28
  80069dc:	46bd      	mov	sp, r7
  80069de:	bd80      	pop	{r7, pc}
- 80069e0:	20002178 	.word	0x20002178
- 80069e4:	20002184 	.word	0x20002184
- 80069e8:	2000217c 	.word	0x2000217c
- 80069ec:	20002170 	.word	0x20002170
- 80069f0:	20002180 	.word	0x20002180
+ 80069e0:	20001368 	.word	0x20001368
+ 80069e4:	20001374 	.word	0x20001374
+ 80069e8:	2000136c 	.word	0x2000136c
+ 80069ec:	20001360 	.word	0x20001360
+ 80069f0:	20001370 	.word	0x20001370
 
 080069f4 <vPortFree>:
 /*-----------------------------------------------------------*/
@@ -18273,8 +18273,8 @@ BlockLink_t *pxLink;
  8006a9a:	3718      	adds	r7, #24
  8006a9c:	46bd      	mov	sp, r7
  8006a9e:	bd80      	pop	{r7, pc}
- 8006aa0:	20002184 	.word	0x20002184
- 8006aa4:	2000217c 	.word	0x2000217c
+ 8006aa0:	20001374 	.word	0x20001374
+ 8006aa4:	2000136c 	.word	0x2000136c
 
 08006aa8 <prvHeapInit>:
 	/* This just exists to keep the linker quiet. */
@@ -18408,12 +18408,12 @@ size_t xTotalHeapSize = configTOTAL_HEAP_SIZE;
  8006b4e:	bc80      	pop	{r7}
  8006b50:	4770      	bx	lr
  8006b52:	bf00      	nop
- 8006b54:	20001570 	.word	0x20001570
- 8006b58:	20002170 	.word	0x20002170
- 8006b5c:	20002178 	.word	0x20002178
- 8006b60:	20002180 	.word	0x20002180
- 8006b64:	2000217c 	.word	0x2000217c
- 8006b68:	20002184 	.word	0x20002184
+ 8006b54:	20000760 	.word	0x20000760
+ 8006b58:	20001360 	.word	0x20001360
+ 8006b5c:	20001368 	.word	0x20001368
+ 8006b60:	20001370 	.word	0x20001370
+ 8006b64:	2000136c 	.word	0x2000136c
+ 8006b68:	20001374 	.word	0x20001374
 
 08006b6c <prvInsertBlockIntoFreeList>:
 /*-----------------------------------------------------------*/
@@ -18556,8 +18556,8 @@ uint8_t *puc;
  8006c0e:	46bd      	mov	sp, r7
  8006c10:	bc80      	pop	{r7}
  8006c12:	4770      	bx	lr
- 8006c14:	20002170 	.word	0x20002170
- 8006c18:	20002178 	.word	0x20002178
+ 8006c14:	20001360 	.word	0x20001360
+ 8006c18:	20001368 	.word	0x20001368
 
 08006c1c <memset>:
  8006c1c:	4603      	mov	r3, r0
@@ -18760,19 +18760,19 @@ uint8_t *puc;
  8006dc6:	6054      	str	r4, [r2, #4]
  8006dc8:	e7cb      	b.n	8006d62 <_free_r+0x22>
  8006dca:	bd38      	pop	{r3, r4, r5, pc}
- 8006dcc:	200022c4 	.word	0x200022c4
+ 8006dcc:	200014b4 	.word	0x200014b4
 
 08006dd0 <__malloc_lock>:
  8006dd0:	4801      	ldr	r0, [pc, #4]	; (8006dd8 <__malloc_lock+0x8>)
  8006dd2:	f7ff bfa5 	b.w	8006d20 <__retarget_lock_acquire_recursive>
  8006dd6:	bf00      	nop
- 8006dd8:	200022c0 	.word	0x200022c0
+ 8006dd8:	200014b0 	.word	0x200014b0
 
 08006ddc <__malloc_unlock>:
  8006ddc:	4801      	ldr	r0, [pc, #4]	; (8006de4 <__malloc_unlock+0x8>)
  8006dde:	f7ff bfa0 	b.w	8006d22 <__retarget_lock_release_recursive>
  8006de2:	bf00      	nop
- 8006de4:	200022c0 	.word	0x200022c0
+ 8006de4:	200014b0 	.word	0x200014b0
 
 08006de8 <_init>:
  8006de8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
