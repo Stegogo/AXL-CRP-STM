@@ -12,10 +12,13 @@
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* DEFINES                                                                  */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-      
+#define CPR_DISPLACEMENT_THRESHOLD 0.5 	// 50 mm
+#define CPR_ACCELERATION_THRESHOLD 5	// 2 m/s/s = 0.2g
+#define CPR_DURATION_SECONDS 10			// for how long to monitor CPR quality
+
 #define TAP_DURATION	40
 #define TAP_THRESHOLD	40
-#define TAP_LATENT		80
+#define TAP_LATENT		40
 #define TAP_WINDOW		200
 
 #define ACCEL_THRESHOLD			1.5  // m/s/s
@@ -55,9 +58,13 @@ static float	accelArray[ACCEL_ARRAY_LEN] = {0};
 static uint16_t accelArrayPointer = 0;
 static uint16_t	accelNumOfPoints = 1;
 
-static uint16_t	double_tap_count = 0;
 static uint16_t displacement_out = 0;
 static int16_t velocity_out = 0;
+
+uint16_t double_tap_count = 0;
+uint16_t tap_windows = 0;
+uint16_t successful_tap_windows = 0;
+bool cpr_successful = false;
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* INTERFACE                                                                */
@@ -110,9 +117,11 @@ void StartReadAccel (void const * argument)
 
         	// Detect acceleration start and end; Record timestamps
         	if (ADXL_accSquare >= ACCEL_THRESHOLD) {
-        		if (accelStartTime == 0.0f)
+        		if (accelStartTime == 0.0f) {
         			accelStartTime = HAL_GetTick();
+        		}
         		accelArray[accelArrayPointer] = ADXL_accSquare;//ADXL_accSquare;
+
 
             	if (++accelArrayPointer >= accelNumOfPoints)  accelArrayPointer = 0;
             	accelNumOfPoints++;
@@ -172,7 +181,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			//ADXL_getIntSource();
 		}
 		if (GPIO_Pin == 2) {	// Double tap interrupt
-			double_tap_count++;
+			//double_tap_count++;
 		}
     }
 }
@@ -180,6 +189,33 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* STATIC MEMBERS                                                           */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/*
+ * This task is called once a second to check if the correct taps were
+ * made within this second.
+ */
+void StartCheckTaps(void const * argument)
+{
+	vTaskSetApplicationTaskTag(NULL, (void *) 3);
+	for(;;)
+	{
+		if (double_tap_count > 1) {
+			tap_windows++;
+			double_tap_count = 0;
+		} else {
+			tap_windows = 0;
+			double_tap_count = 0;
+			cpr_successful = false;
+		}
+
+		if (tap_windows == CPR_DURATION_SECONDS) {
+			cpr_successful = true;
+		}
+
+		osDelay(1000);
+	}
+}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 /* Calculate Velocity given acceleration and time
@@ -222,6 +258,9 @@ static void calcDisplacement (void)
 
 	accelArrayAvg = accelArrayAvg / n;
 	displacement = ((accelArrayAvg / 2)  * (end_s - start_s) * (end_s - start_s)) * 100; // to сm
+
+	if (displacement > CPR_DISPLACEMENT_THRESHOLD && accelArrayAvg > CPR_ACCELERATION_THRESHOLD)
+		double_tap_count++;
 }
 
 
