@@ -18,7 +18,7 @@
 #define TAP_LATENT		80
 #define TAP_WINDOW		200
 
-#define ACCEL_THRESHOLD			2  // m/s/s
+#define ACCEL_THRESHOLD			1.5  // m/s/s
 #define ACCEL_ARRAY_LEN 		100	// 100HZ freq rate is 1000 samples per second
 
 #define PACKET_LEN				14
@@ -35,7 +35,7 @@
 /* FUNCTION PROTOTYPES                                                      */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 static void calcDisplacement (void);
-
+static void calcVelocity (void);
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* GLOBAL VARIABLES                                                         */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -64,6 +64,11 @@ static int16_t velocity_out = 0;
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/*
+ * Read accelerometer values and compose a packet to send.
+ * Task is blocked; Triggers by semaphore it got from interrupt routine
+ * When this task is called first, it configures ADXL and initializes measurements
+ */
 void StartReadAccel (void const * argument)
 {
 	vTaskSetApplicationTaskTag(NULL, (void *) 1);
@@ -105,8 +110,9 @@ void StartReadAccel (void const * argument)
 
         	// Detect acceleration start and end; Record timestamps
         	if (ADXL_accSquare >= ACCEL_THRESHOLD) {
-        		accelStartTime = HAL_GetTick();
-        		accelArray[accelArrayPointer] = ADXL_acc[1];//ADXL_accSquare;
+        		if (accelStartTime == 0.0f)
+        			accelStartTime = HAL_GetTick();
+        		accelArray[accelArrayPointer] = ADXL_accSquare;//ADXL_accSquare;
 
             	if (++accelArrayPointer >= accelNumOfPoints)  accelArrayPointer = 0;
             	accelNumOfPoints++;
@@ -114,6 +120,7 @@ void StartReadAccel (void const * argument)
         	if ((ADXL_accSquare < ACCEL_THRESHOLD) && accelStartTime != 0) {
         		accelEndTime = HAL_GetTick();
         		calcDisplacement();
+        		calcVelocity();
         		accelStartTime = 0;
         		memset ((uint8_t *)accelArray, 0, ACCEL_ARRAY_LEN * sizeof (float));
         		accelNumOfPoints = 0;
@@ -174,34 +181,47 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /* STATIC MEMBERS                                                           */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/* Calculate Velocity given acceleration and time
+ * V = V0 + ∫a(t)dt (with integral limits being start and end of acceleration)
+ * V0 is assumed to be 0, as if each compression begins with a stable position
+ * on the patient's chest.
+ * V is calculated in meters per second
+ */
+static void calcVelocity (void)
+{
+
+
+	velocity = 0.0f; // reset previous
+	float start_s = (float)accelStartTime / 1000;					// start timestamp in s
+	float end_s = (float)accelEndTime / 1000;						// end timestamp in s
+	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
+
+   for(int i=0; i <= n; i++) {
+	   velocity += (accelArray[i]) * (end_s - start_s) / 2;
+   }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/* Calculate displacement
+ * S = (a / 2) * t^2 (Again, V0 is assumed to be 0).
+ * a here is average acceleration accumulated over time of it being present
+ * S in calculated in meters
+ */
 static void calcDisplacement (void)
 {
-//	/* Calculate Velocity given acceleration and time
-//	 * V = V0 + ∫a(t)dt (with integral limits being start and end of acceleraiton)
-//	 * V0 is assumed to be 0, as if each compression begins with a stable position
-//	 * on the patient's chest.
-//	 * V is calculated in meters per second
-//	 */
-	float y = 0.0f;
-	float start_s = (float)accelStartTime / 1000;	// start timestampt in s
-	float end_s = (float)accelEndTime / 1000;		// end timestampt in s
+	displacement = 0.0f; // reset previous
+	float start_s = (float)accelStartTime / 1000;					// start timestamp in s
+	float end_s = (float)accelEndTime / 1000;						// end timestamp in s
+	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
 
-	for (float i = start_s; i < end_s; i += (end_s - start_s) / accelNumOfPoints) {
-		y = accelArray[accelArrayPointer] * (end_s - start_s);
-		velocity += y * (end_s - start_s) / accelNumOfPoints;
-	}
-
-	/* Next, calculate displacement
-	 * S = (a / 2) * t^2 (Again, V0 is assumed to be 0).
-	 * a here is average acceleration accumulated over time of it being present
-	 * S in calculated in meters
-	 */
-	float accelArrayAvg;
-	for (uint8_t i = 0; i < accelNumOfPoints; i++) {
+	float accelArrayAvg = 0;
+	for (uint8_t i = 0; i <= n; i++) {
 		accelArrayAvg += accelArray[i];
 	}
-	accelArrayAvg = accelArrayAvg / accelNumOfPoints;
-	displacement = ((accelArrayAvg / 2)  * (end_s - start_s) * (end_s - start_s))  * 1000; // to mm
+
+	accelArrayAvg = accelArrayAvg / n;
+	displacement = ((accelArrayAvg / 2)  * (end_s - start_s) * (end_s - start_s)) * 100; // to сm
 }
 
 

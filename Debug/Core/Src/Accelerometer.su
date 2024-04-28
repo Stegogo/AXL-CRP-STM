@@ -1,3 +1,4 @@
-../Core/Src/Accelerometer.c:65:6:StartReadAccel	56	static
-../Core/Src/Accelerometer.c:150:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/Accelerometer.c:168:13:calcDisplacement	40	static
+../Core/Src/Accelerometer.c:72:6:StartReadAccel	64	static
+../Core/Src/Accelerometer.c:166:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/Accelerometer.c:191:13:calcVelocity	32	static
+../Core/Src/Accelerometer.c:211:13:calcDisplacement	40	static
