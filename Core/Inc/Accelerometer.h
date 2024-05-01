@@ -27,6 +27,7 @@
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
 extern void StartReadAccel           (void const * argument);
+extern void StartSendAccel           (void const * argument);
 extern void HAL_GPIO_EXTI_Callback       (uint16_t GPIO_Pin);
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
