@@ -82,6 +82,8 @@ void TaskSwitchedOut(uint32_t tag);
 #define DEBUG_IDLE_GPIO_Port GPIOB
 #define DEBUG_TAG3_Pin GPIO_PIN_8
 #define DEBUG_TAG3_GPIO_Port GPIOB
+#define DEBUG_TAG4_Pin GPIO_PIN_9
+#define DEBUG_TAG4_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

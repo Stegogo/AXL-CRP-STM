@@ -64,8 +64,8 @@ all: main-build
 main-build: F103C8T6_ACL.elf secondary-outputs
 
 # Tool invocations
-F103C8T6_ACL.elf F103C8T6_ACL.map: $(OBJS) $(USER_OBJS) /home/maru/STM32CubeIDE/000/F103C8T6_ACL/STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "F103C8T6_ACL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/maru/STM32CubeIDE/000/F103C8T6_ACL/STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F103C8T6_ACL.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+F103C8T6_ACL.elf F103C8T6_ACL.map: $(OBJS) $(USER_OBJS) /home/maru/STM32CubeIDE/workspace_3/F103C8T6_ACL/STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "F103C8T6_ACL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/maru/STM32CubeIDE/workspace_3/F103C8T6_ACL/STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F103C8T6_ACL.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

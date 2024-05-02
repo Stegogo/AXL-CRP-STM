@@ -1,4 +1,4 @@
-../Core/Src/freertos.c:73:13:vApplicationIdleHook	1
-../Core/Src/freertos.c:91:6:vApplicationGetIdleTaskMemory	1
-../Core/Src/freertos.c:105:6:MX_FREERTOS_Init	1
-../Core/Src/freertos.c:157:6:StartDefaultTask	1
+../Core/Src/freertos.c:76:13:vApplicationIdleHook	1
+../Core/Src/freertos.c:94:6:vApplicationGetIdleTaskMemory	1
+../Core/Src/freertos.c:108:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:168:6:StartDefaultTask	1

@@ -1,5 +1,9 @@
-../Core/Src/Accelerometer.c:79:6:StartReadAccel	8
-../Core/Src/Accelerometer.c:175:6:HAL_GPIO_EXTI_Callback	3
-../Core/Src/Accelerometer.c:198:6:StartCheckTaps	3
-../Core/Src/Accelerometer.c:227:13:calcVelocity	3
-../Core/Src/Accelerometer.c:247:13:calcDisplacement	5
+../Core/Src/Accelerometer.c:90:6:StartReadAccel	8
+../Core/Src/Accelerometer.c:161:6:StartCheckTaps	8
+../Core/Src/Accelerometer.c:207:6:StartSendAccel	2
+../Core/Src/Accelerometer.c:251:6:HAL_GPIO_EXTI_Callback	2
+../Core/Src/Accelerometer.c:268:13:calcSamples	8
+../Core/Src/Accelerometer.c:307:13:calcVelocity	3
+../Core/Src/Accelerometer.c:326:13:calcDisplacement	1
+../Core/Src/Accelerometer.c:344:13:checkCorrectTap	4
+../Core/Src/Accelerometer.c:354:13:resetCPR	1

@@ -50,7 +50,9 @@
 osThreadId defaultTaskHandle;
 osThreadId ReadAccelHandle;
 osThreadId CheckTapsHandle;
+osThreadId SendAccelHandle;
 osSemaphoreId AccelDataReadyHandle;
+osSemaphoreId ReadyToPackBinHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -60,6 +62,7 @@ osSemaphoreId AccelDataReadyHandle;
 void StartDefaultTask(void const * argument);
 extern void StartReadAccel(void const * argument);
 extern void StartCheckTaps(void const * argument);
+extern void StartSendAccel(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -116,6 +119,10 @@ void MX_FREERTOS_Init(void) {
   osSemaphoreDef(AccelDataReady);
   AccelDataReadyHandle = osSemaphoreCreate(osSemaphore(AccelDataReady), 1);
 
+  /* definition and creation of ReadyToPackBin */
+  osSemaphoreDef(ReadyToPackBin);
+  ReadyToPackBinHandle = osSemaphoreCreate(osSemaphore(ReadyToPackBin), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -141,6 +148,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(CheckTaps, StartCheckTaps, osPriorityNormal, 0, 128);
   CheckTapsHandle = osThreadCreate(osThread(CheckTaps), NULL);
 
+  /* definition and creation of SendAccel */
+  osThreadDef(SendAccel, StartSendAccel, osPriorityBelowNormal, 0, 128);
+  SendAccelHandle = osThreadCreate(osThread(SendAccel), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -157,7 +168,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-	vTaskSetApplicationTaskTag(NULL, (void *) 2);
+	vTaskSetApplicationTaskTag(NULL, (void *) 4);
 	/* Infinite loop */
   for(;;)
   {
