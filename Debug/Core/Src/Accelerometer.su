@@ -1,9 +1,9 @@
 ../Core/Src/Accelerometer.c:90:6:StartReadAccel	32	static
-../Core/Src/Accelerometer.c:161:6:StartCheckTaps	16	static
-../Core/Src/Accelerometer.c:207:6:StartSendAccel	40	static
-../Core/Src/Accelerometer.c:251:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/Accelerometer.c:268:13:calcSamples	32	static
-../Core/Src/Accelerometer.c:307:13:calcVelocity	32	static
-../Core/Src/Accelerometer.c:326:13:calcDisplacement	24	static
-../Core/Src/Accelerometer.c:344:13:checkCorrectTap	8	static
-../Core/Src/Accelerometer.c:354:13:resetCPR	4	static
+../Core/Src/Accelerometer.c:163:6:StartCheckTaps	16	static
+../Core/Src/Accelerometer.c:209:6:StartSendAccel	40	static
+../Core/Src/Accelerometer.c:253:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/Accelerometer.c:270:13:calcSamples	24	static
+../Core/Src/Accelerometer.c:310:13:calcVelocity	32	static
+../Core/Src/Accelerometer.c:329:13:calcDisplacement	40	static
+../Core/Src/Accelerometer.c:354:13:checkCorrectTap	16	static
+../Core/Src/Accelerometer.c:371:13:resetCPR	4	static

@@ -13,7 +13,7 @@
 /* DEFINES                                                                  */
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 #define CPR_DISPLACEMENT_THRESHOLD 0.5 	// 50 mm
-#define CPR_ACCELERATION_THRESHOLD 5	// 2 m/s/s = 0.2g
+#define CPR_ACCELERATION_THRESHOLD 2	// 2 m/s/s = 0.2g
 #define CPR_SINGLE_TAP_THRESHOLD 20		// how many single taps are allowed
 #define CPR_DURATION_SECONDS 10			// for how long to monitor CPR quality
 
@@ -59,7 +59,7 @@ static uint32_t accelEndTime = 0;
 
 static float 	displacement = 0.0f;
 static float 	velocity = 0.0f;
-static float 	accelArrayAvg = 0;
+//static
 static float	accelArray[ACCEL_ARRAY_LEN] = {0};
 static uint16_t accelArrayPointer = 0;
 static uint16_t	accelNumOfPoints = 1;
@@ -134,7 +134,7 @@ void StartReadAccel (void const * argument)
 		}
 		if ((ADXL_accSquare < ACCEL_THRESHOLD) && accelStartTime != 0) {
 			accelEndTime = HAL_GetTick();
-			calcSamples();
+			//calcSamples();
 			calcDisplacement();
 			calcVelocity();
 			checkCorrectTap();
@@ -142,6 +142,8 @@ void StartReadAccel (void const * argument)
 			memset ((uint8_t *)accelArray, 0, ACCEL_ARRAY_LEN * sizeof (float));
 			accelNumOfPoints = 0;
 			accelArrayPointer = 0;
+			//displacement = 0;
+			velocity = 0;
 		}
 
 		// If we past this point we can compose a valid packet to send, so unlock task
@@ -267,13 +269,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  */
 static void calcSamples (void)
 {
-	// Calculate array average
-	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
-	for (uint8_t i = 0; i <= n; i++) {
-		accelArrayAvg += accelArray[i];
-	}
-	accelArrayAvg = accelArrayAvg / n;
+//	// Calculate array average
+//	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
+//	for (uint8_t i = 0; i <= n; i++) {
+//		accelArrayAvg += accelArray[i];
+//	}
+//	accelArrayAvg = accelArrayAvg / n;
 
+	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
 	// Chest recoil check
 	float accelArrayMax = accelArray[0];
 	uint16_t recoil_unlikely = 0;
@@ -329,6 +332,13 @@ static void calcDisplacement (void)
 	float start_s = (float)accelStartTime / 1000;					// start timestamp in s
 	float end_s = (float)accelEndTime / 1000;						// end timestamp in s
 
+	float 	accelArrayAvg = 0;
+	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
+	for (uint8_t i = 0; i <= n; i++) {
+		accelArrayAvg += accelArray[i];
+	}
+	accelArrayAvg = accelArrayAvg / n;
+
 	displacement = ((accelArrayAvg / 2)  * (end_s - start_s) * (end_s - start_s)) * 100; // to сm
 
 	// register a correct tap
@@ -343,6 +353,13 @@ static void calcDisplacement (void)
  */
 static void checkCorrectTap (void)
 {
+	float 	accelArrayAvg = 0;
+	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
+	for (uint8_t i = 0; i <= n; i++) {
+		accelArrayAvg += accelArray[i];
+	}
+	accelArrayAvg = accelArrayAvg / n;
+	chest_recoil = true;
 	if (displacement > CPR_DISPLACEMENT_THRESHOLD && accelArrayAvg > CPR_ACCELERATION_THRESHOLD && chest_recoil == true)
 		tap_count++;
 }
