@@ -94,7 +94,7 @@ void StartReadAccel (void const * argument)
 	ADXL_InitStruct.SPIMode      = SPIMODE_4WIRE;
 	ADXL_InitStruct.IntMode      = INT_ACTIVEHIGH;
 	ADXL_InitStruct.LPMode       = LPMODE_NORMAL;
-	ADXL_InitStruct.Rate         = BWRATE_200;
+	ADXL_InitStruct.Rate         = BWRATE_100;
     ADXL_InitStruct.Range        = RANGE_2G;
     ADXL_InitStruct.Resolution   = RESOLUTION_FULL;
     ADXL_InitStruct.Justify      = JUSTIFY_SIGNED; 
@@ -134,7 +134,7 @@ void StartReadAccel (void const * argument)
 		}
 		if ((ADXL_accSquare < ACCEL_THRESHOLD) && accelStartTime != 0) {
 			accelEndTime = HAL_GetTick();
-			//calcSamples();
+			calcSamples();
 			calcDisplacement();
 			calcVelocity();
 			checkCorrectTap();
@@ -142,8 +142,8 @@ void StartReadAccel (void const * argument)
 			memset ((uint8_t *)accelArray, 0, ACCEL_ARRAY_LEN * sizeof (float));
 			accelNumOfPoints = 0;
 			accelArrayPointer = 0;
-			//displacement = 0;
-			velocity = 0;
+//			displacement = 0;
+//			velocity = 0;
 		}
 
 		// If we past this point we can compose a valid packet to send, so unlock task
@@ -233,19 +233,20 @@ void StartSendAccel(void const * argument)
 		packet[6] = (uint8_t)(ADXL_out[2] & 0xFF);
 		packet[7] = (uint8_t)(ADXL_out[2] >> 0x08);
 		// displacement, m * 10000000
-		packet[9] = (uint8_t)(displacement_out & 0xFF);
-		packet[10] = (uint8_t)(displacement_out >> 0x08);
+		packet[8] = (uint8_t)(displacement_out & 0xFF);
+		packet[9] = (uint8_t)(displacement_out >> 0x08);
 		// velocity, m/s * 10000000
-		packet[11] = (uint8_t)(velocity_out & 0xFF);
-		packet[12] = (uint8_t)(velocity_out >> 0x08);
+		packet[10] = (uint8_t)(velocity_out & 0xFF);
+		packet[11] = (uint8_t)(velocity_out >> 0x08);
+		// current tap count
+		packet[12] = tap_count;
 		// checksum
 		uint8_t checksum = 0;
-		for (uint8_t i = 2; i < PACKET_LEN; i++) {
+		for (uint8_t i = 2; i < PACKET_LEN - 1; i++) {
 			checksum ^= packet[i];
 		}
 		packet[13] = checksum;
 		HAL_UART_Transmit(&huart1, (uint8_t *)packet, sizeof(packet), 1);
-		//osDelay(1000);
 	}
 }
 
