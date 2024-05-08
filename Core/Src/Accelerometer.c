@@ -20,7 +20,7 @@
 #define ACCEL_THRESHOLD			1.5  // m/s/s
 #define ACCEL_ARRAY_LEN 		100	// 100HZ freq rate is 1000 samples per second
 
-#define PACKET_LEN				14
+#define PACKET_LEN				15
 
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 /* ENUMS                                                                    */
@@ -138,6 +138,10 @@ void StartReadAccel (void const * argument)
 			accelNumOfPoints = 0;
 			accelArrayPointer = 0;
 		}
+//		if ((ADXL_accSquare < ACCEL_THRESHOLD) && accelEndTime == 0.0f) {
+//			velocity = 0.0f;
+//			displacement = 0.0f;
+//		}
 
 		// If we past this point we can compose a valid packet to send, so unlock task
 		// guarantee to trigger packet send task half the frequency of this task
@@ -232,12 +236,14 @@ void StartSendAccel(void const * argument)
 		packet[11] = (uint8_t)(velocity_out >> 0x08);
 		// current tap count
 		packet[12] = tap_count;
+		// assessment result
+		packet[13] = cpr_successful;
 		// checksum
 		uint8_t checksum = 0;
 		for (uint8_t i = 2; i < PACKET_LEN - 1; i++) {
 			checksum ^= packet[i];
 		}
-		packet[13] = checksum;
+		packet[14] = checksum;
 		HAL_UART_Transmit(&huart1, (uint8_t *)packet, sizeof(packet), 1);
 	}
 }
@@ -262,6 +268,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  */
 static void calcSamples (void)
 {
+	chest_recoil = false; // reset previous
 	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
 	// Chest recoil check
 	float accelArrayMax = accelArray[0];
@@ -274,7 +281,7 @@ static void calcSamples (void)
 		}
 	}
 	for (uint8_t i = accelArrayMaxIndex + 1; i <= n; i++) {
-		if (fabs(accelArray[i]) < fabs(accelArray[i - 1]))
+		if (fabs(accelArray[i] - accelArray[i - 1]) < 0.5)
 			continue;
 		else
 			recoil_unlikely++;
@@ -348,7 +355,6 @@ static void checkCorrectTap (void)
 		accelArrayAvg += accelArray[i];
 	}
 	accelArrayAvg = accelArrayAvg / n;
-	chest_recoil = true;
 	if (displacement > CPR_DISPLACEMENT_THRESHOLD && accelArrayAvg > CPR_ACCELERATION_THRESHOLD && chest_recoil == true)
 		tap_count++;
 }
