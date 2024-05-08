@@ -15,12 +15,7 @@
 #define CPR_DISPLACEMENT_THRESHOLD 0.5 	// 50 mm
 #define CPR_ACCELERATION_THRESHOLD 2	// 2 m/s/s = 0.2g
 #define CPR_SINGLE_TAP_THRESHOLD 20		// how many single taps are allowed
-#define CPR_DURATION_SECONDS 10			// for how long to monitor CPR quality
-
-#define TAP_DURATION	40
-#define TAP_THRESHOLD	40
-#define TAP_LATENT		40
-#define TAP_WINDOW		200
+#define CPR_DURATION_SECONDS 15			// for how long to monitor CPR quality
 
 #define ACCEL_THRESHOLD			1.5  // m/s/s
 #define ACCEL_ARRAY_LEN 		100	// 100HZ freq rate is 1000 samples per second
@@ -94,7 +89,7 @@ void StartReadAccel (void const * argument)
 	ADXL_InitStruct.SPIMode      = SPIMODE_4WIRE;
 	ADXL_InitStruct.IntMode      = INT_ACTIVEHIGH;
 	ADXL_InitStruct.LPMode       = LPMODE_NORMAL;
-	ADXL_InitStruct.Rate         = BWRATE_100;
+	ADXL_InitStruct.Rate         = BWRATE_400;
     ADXL_InitStruct.Range        = RANGE_2G;
     ADXL_InitStruct.Resolution   = RESOLUTION_FULL;
     ADXL_InitStruct.Justify      = JUSTIFY_SIGNED; 
@@ -142,8 +137,6 @@ void StartReadAccel (void const * argument)
 			memset ((uint8_t *)accelArray, 0, ACCEL_ARRAY_LEN * sizeof (float));
 			accelNumOfPoints = 0;
 			accelArrayPointer = 0;
-//			displacement = 0;
-//			velocity = 0;
 		}
 
 		// If we past this point we can compose a valid packet to send, so unlock task
@@ -191,7 +184,6 @@ void StartCheckTaps(void const * argument)
 		// If CPR lasted for 60 seconds and we received a considerate amount of taps,
 		// set success flag with the amount of taps
 		if ((double_tap_windows + single_tap_windows + zero_tap_windows) == CPR_DURATION_SECONDS) {
-			//uint16_t total_taps = single_tap_windows + (double_tap_windows * 2);
 			cpr_successful = true;
 		}
 
@@ -212,8 +204,8 @@ void StartSendAccel(void const * argument)
 	for(;;)
 	{
 		osSemaphoreWait (ReadyToPackBinHandle, osWaitForever);
-		displacement_out = (uint16_t)(displacement * 1.0e6);
-		velocity_out = (int16_t)(velocity * 1.0e6);
+		displacement_out = (uint16_t)(displacement * 1.0e4);
+		velocity_out = (int16_t)(velocity * 1.0e4);
 		int16_t ADXL_out[3]= {0};
 		ADXL_out[0] = (int16_t)(ADXL_acc[0] * 1.0e4);
 		ADXL_out[1] = (int16_t)(ADXL_acc[1] * 1.0e4);
@@ -270,13 +262,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  */
 static void calcSamples (void)
 {
-//	// Calculate array average
-//	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
-//	for (uint8_t i = 0; i <= n; i++) {
-//		accelArrayAvg += accelArray[i];
-//	}
-//	accelArrayAvg = accelArrayAvg / n;
-
 	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
 	// Chest recoil check
 	float accelArrayMax = accelArray[0];
@@ -333,12 +318,15 @@ static void calcDisplacement (void)
 	float start_s = (float)accelStartTime / 1000;					// start timestamp in s
 	float end_s = (float)accelEndTime / 1000;						// end timestamp in s
 
-	float 	accelArrayAvg = 0;
+	float accelArrayAvg = 0;
 	uint16_t n = accelArrayPointer == 0? 0 : accelArrayPointer - 1;	// number of measurements
 	for (uint8_t i = 0; i <= n; i++) {
 		accelArrayAvg += accelArray[i];
 	}
-	accelArrayAvg = accelArrayAvg / n;
+	if (n != 0)
+		accelArrayAvg = accelArrayAvg / n;
+	else
+		accelArrayAvg = 0;
 
 	displacement = ((accelArrayAvg / 2)  * (end_s - start_s) * (end_s - start_s)) * 100; // to сm
 
